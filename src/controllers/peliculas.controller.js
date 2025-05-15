@@ -81,18 +81,23 @@ export const updatePeliculas = async (req, res) => {
 }
 
 export const deletePeliculas = async (req, res) => {
-  try{
-    const [result] = await pool.query("DELETE FROM peliculas WHERE id = ?", [req.params.id])
-    if (result.affectedRows <= 0){
-    return res.status(404).json({
-      message: 'No existe registro con es ID'
-    })
+  try {
+    const [result] = await pool.query("DELETE FROM peliculas WHERE id = ?", [req.params.id]);
+
+    if (result.affectedRows <= 0) {
+      return res.status(404).json({
+        message: 'No existe registro con ese ID'
+      });
     }
 
-  res.sendStatus(204)
-  }catch{
+    return res.json({
+      message: 'Eliminado correctamente',
+      id: req.params.id
+    });
+
+  } catch {
     return res.status(500).json({
-      message:'Error al eliminar la peliculas'
-    })
+      message: 'Error al eliminar la película'
+    });
   }
 }
